@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  # The application
+  app:
+    build: .
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/opt/app
+    environment:
+      - PORT=4000
+    depends_on:
+      - docker-mongo
+
+  # Database server mongodb
+  docker-mongo:
+    image: mongo:latest
+    command: --quiet
+    expose:
+      - "27017"
+    ports:
+      - "28017:28017"
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+
+

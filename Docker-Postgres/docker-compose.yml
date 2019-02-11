@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  # The application
+  app:
+    build: .
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/opt/app
+    environment:
+      - PORT=4000
+      - DATABASE=postgres://postgres:secret@docker-postgres:5432/docker
+    depends_on:
+      - docker-postgres
+
+  # Database server postgres
+  docker-postgres:
+    image: postgres:10-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=docker
+    logging:
+      driver: none
+
+
